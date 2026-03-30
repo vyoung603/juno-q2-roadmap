@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Project Juno -- Q2 2026 Roadmap</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --lake: #004455;
+    --teal: #46b2b8;
+    --solace: #F1D77D;
+    --cream: #F5F0E8;
+    --sky: #E3EDEC;
+    --lilac: #A791BA;
+    --lilac-light: #d4c8e0;
+    --lake-light: #4a6875;
+    --teal-light: #dbf0f2;
+    --gold-light: #faecc0;
+    --lilac-bg: #efe8f5;
+    --lake-bg: #e0eaee;
+  }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--lake);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--lake) 0%, #116a81 60%, var(--teal) 100%);
+    color: white;
+    padding: 40px 48px 32px;
+  }
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 2.25rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .header .subtitle {
+    font-size: 1rem;
+    opacity: 0.8;
+    margin-top: 4px;
+    font-weight: 400;
+  }
+  .header .date-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* SUMMARY BAR */
+  .summary-bar {
+    display: flex;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .summary-stat {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .summary-stat .num {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+  .summary-stat .label {
+    font-size: 0.85rem;
+    opacity: 0.8;
+  }
+
+  /* MAIN */
+  .main {
+    padding: 32px 24px 64px;
+    max-width: 1600px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+
+  /* TIMELINE LEGEND */
+  .timeline-legend {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 24px;
+    padding: 12px 16px;
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+  .timeline-legend .loe-legend {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .timeline-legend .loe-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--lake-light);
+  }
+  .loe-badge-sample {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+  .loe-high { background: #fee; color: #c0392b; }
+  .loe-medium { background: #fef3cd; color: #856404; }
+  .loe-low { background: #d4edda; color: #155724; }
+
+  /* SWIMLANE */
+  .swimlane {
+    margin-bottom: 32px;
+    background: white;
+    border-radius: 12px;
+    border: 2px solid #e0e0e0;
+    overflow: hidden;
+  }
+  .swimlane-header {
+    background: var(--teal);
+    color: white;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .swimlane.area-sm .swimlane-header { background: var(--lake); }
+  .swimlane.area-infra .swimlane-header { background: #b8960e; }
+  .swimlane.area-coach .swimlane-header { background: var(--lilac); }
+  .swimlane.area-tb .swimlane-header { background: #e67e22; }
+
+  .swimlane-header h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  .swimlane-header .count {
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: rgba(255,255,255,0.25);
+    padding: 2px 10px;
+    border-radius: 12px;
+  }
+
+  /* TIMELINE GRID */
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* A B C D E F TBD */
+    min-height: 100px;
+    position: relative;
+  }
+  .timeline-column {
+    border-right: 1px solid #e8e8e8;
+    padding: 12px 8px;
+    min-height: 100px;
+    position: relative;
+  }
+  .timeline-column:last-child { border-right: none; }
+  .timeline-column.phase-tbd {
+    background: #f8f8f8;
+  }
+
+  /* CARD */
+  .card {
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid var(--teal);
+    padding: 12px 14px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.15s ease, transform 0.1s ease;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  }
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0,68,85,0.15);
+    transform: translateY(-1px);
+  }
+  .swimlane.area-sm .card { border-left-color: var(--lake); }
+  .swimlane.area-infra .card { border-left-color: var(--solace); }
+  .swimlane.area-coach .card { border-left-color: var(--lilac); }
+  .swimlane.area-tb .card { border-left-color: #e67e22; }
+
+  .card-title {
+    font-weight: 700;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    padding-right: 28px;
+  }
+  .card-desc {
+    font-size: 0.75rem;
+    color: var(--lake-light);
+    line-height: 1.4;
+  }
+
+  .loe-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.65rem;
+    font-weight: 700;
+  }
+
+  .card-expand-icon {
+    position: absolute;
+    bottom: 8px;
+    right: 10px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--sky);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--lake-light);
+    transition: transform 0.2s ease;
+  }
+  .card.expanded .card-expand-icon {
+    transform: rotate(180deg);
+  }
+
+  /* EXPANDED CONTENT */
+  .card-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  .card.expanded .card-details {
+    max-height: 400px;
+  }
+  .card-details-inner {
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: 1px solid #eee;
+  }
+
+  .sub-items {
+    list-style: none;
+    margin-bottom: 10px;
+  }
+  .sub-items li {
+    font-size: 0.72rem;
+    color: var(--lake-light);
+    padding: 2px 0 2px 12px;
+    position: relative;
+  }
+  .sub-items li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--teal);
+  }
+  .swimlane.area-sm .sub-items li::before { background: var(--lake); }
+  .swimlane.area-infra .sub-items li::before { background: #c9a630; }
+  .swimlane.area-coach .sub-items li::before { background: var(--lilac); }
+
+  .metric-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .metric {
+    background: var(--teal-light);
+    border-radius: 6px;
+    padding: 6px 10px;
+    flex: 1;
+    min-width: 100px;
+  }
+  .swimlane.area-sm .metric { background: var(--lake-bg); }
+  .swimlane.area-infra .metric { background: var(--gold-light); }
+  .swimlane.area-coach .metric { background: var(--lilac-bg); }
+  .metric-label {
+    font-size: 0.62rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--lake-light);
+    margin-bottom: 2px;
+  }
+  .metric-value {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--lake);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 1200px) {
+    .timeline-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  @media (max-width: 768px) {
+    .header { padding: 28px 20px 24px; }
+    .header h1 { font-size: 1.6rem; }
+    .main { padding: 24px 12px 48px; }
+    .timeline-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Q2 2026 Product Roadmap</h1>
+      <div class="subtitle">Project Juno -- April through June 2026</div>
+    </div>
+    <div class="date-badge">Updated Mar 30, 2026</div>
+  </div>
+  <div class="summary-bar">
+    <div class="summary-stat">
+      <span class="num">20</span>
+      <span class="label">initiatives</span>
+    </div>
+    <div class="summary-stat">
+      <span class="num">5</span>
+      <span class="label">product areas</span>
+    </div>
+    <div class="summary-stat">
+      <span class="num">22</span>
+      <span class="label">key metrics tracked</span>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="timeline-legend">
+    <div class="loe-legend">
+      <span class="loe-label">Lift:</span>
+      <span class="loe-badge-sample loe-high">H</span>
+      <span class="loe-badge-sample loe-medium">M</span>
+      <span class="loe-badge-sample loe-low">L</span>
+    </div>
+  </div>
+
+  <!-- JUNO APP -->
+  <div class="swimlane area-juno">
+    <div class="swimlane-header">
+      <h2>Juno App</h2>
+      <span class="count">3 items</span>
+    </div>
+    <div class="timeline-grid">
+      <!-- Phase A -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-high">H</span>
+          <div class="card-title">Launch and Iterate on Core Lontra MVP</div>
+          <div class="card-desc">Ship Lontra iOS with TTB assessments, scoring, and AI Coach. Live first week in April, iterate throughout.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <ul class="sub-items">
+              <li>Content library in home screen</li>
+              <li>Dynamic TTB content in coach</li>
+              <li>Native TTB exercises</li>
+              <li>Push notifications</li>
+              <li>Historical progress visualization</li>
+              <li>Onboarding flow iteration</li>
+            </ul>
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">MAU</div>
+                <div class="metric-value">0 to 2K MAU</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Assessment</div>
+                <div class="metric-value">>60% completion, 15% to >25% coach conversion</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase B -->
+      <div class="timeline-column"></div>
+      <!-- Phase C -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-low">L</span>
+          <div class="card-title">v1 Therapist-in-the-Loop</div>
+          <div class="card-desc">Clinical oversight via LangSmith with W2 therapists. Required for enterprise safety claims.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">1.7% guardrail rate, 8.8% emergency rate</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">100% escalations reviewed within 48hrs</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase D -->
+      <div class="timeline-column"></div>
+      <!-- Phase E -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-high">H</span>
+          <div class="card-title">B2B2C Pivot</div>
+          <div class="card-desc">Minimum enterprise features for university/employer pilots. No SSO until signed.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <ul class="sub-items">
+              <li>Enrollment code flow</li>
+              <li>Org branding</li>
+              <li>Population dashboard (Google Sheets export initially)</li>
+            </ul>
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">0 to 1 signed pilot, 3+ proposals by Q2 end</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase F -->
+      <div class="timeline-column"></div>
+      <!-- TBD -->
+      <div class="timeline-column phase-tbd"></div>
+    </div>
+  </div>
+
+  <!-- SM APP -->
+  <div class="swimlane area-sm">
+    <div class="swimlane-header">
+      <h2>SM App</h2>
+      <span class="count">5 items</span>
+    </div>
+    <div class="timeline-grid">
+      <!-- Phase A -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Care Journey - Milestone 1 Iteration and MVP Next Builds</div>
+          <div class="card-desc">Launch on 4/15. Fix bugs/quality across native app and web portal, then build out next care journey features.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <ul class="sub-items">
+              <li>Milestone 1 launch and iteration (4/15)</li>
+              <li>Clinical Worksheets: providers share PDF worksheets with clients, track usage to prioritize interactive builds</li>
+              <li>Provider visibility into client activity: talking points, mood tracking, journaling summaries (client opt-out)</li>
+            </ul>
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Care Tools</div>
+                <div class="metric-value">13% care tool adoption, 4% session prep</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Worksheets</div>
+                <div class="metric-value">0 to 25% provider adoption in first month</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-low">L</span>
+          <div class="card-title">Native Directory</div>
+          <div class="card-desc">Launch in-app therapist search and booking. Dev complete, waiting on data eng.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">~195 session requests/mo from app (0.4% of app MAU)</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">TBD after directory launch</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase B -->
+      <div class="timeline-column"></div>
+      <!-- Phase C -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-high">H</span>
+          <div class="card-title">App as a Retention Tool: A/B Testing Features that Drive LTV Expansion</div>
+          <div class="card-desc">A/B test prompting therapy clients to journal after sessions. Self-care adopters show 12% higher session volume (2.70 vs 2.42/mo).</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">3.1% journal adoption, 2.42 sessions/mo</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">Prove causation via A/B test</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase D -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-low">L</span>
+          <div class="card-title">Care Journey: Clinical Worksheets MVP (PDF)</div>
+          <div class="card-desc">Enable providers to share PDF worksheets with clients in-app. Track usage to prioritize which become interactive.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">0 to 25% provider adoption in first month</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase E -->
+      <div class="timeline-column"></div>
+      <!-- Phase F -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-low">L</span>
+          <div class="card-title">Care Journey: Provider Visibility into Client Activity</div>
+          <div class="card-desc">Provider portal "journey or activity tab" could include activity into care tools: talking points, mood tracking, journaling summaries (client opt-out).</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">0% currently, target TBD</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- TBD -->
+      <div class="timeline-column phase-tbd"></div>
+    </div>
+  </div>
+
+  <!-- COMMON INFRA -->
+  <div class="swimlane area-infra">
+    <div class="swimlane-header">
+      <h2>Common Infra</h2>
+      <span class="count">5 items</span>
+    </div>
+    <div class="timeline-grid">
+      <!-- Phase A -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-high">H</span>
+          <div class="card-title">Content Distribution Backend</div>
+          <div class="card-desc">Infra for serving TTB resources, worksheets, and content packets to both apps. Enables dynamic content in coach and native UX and web portal.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Primary</div>
+                <div class="metric-value">New capability (availability + latency)</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Biometric Data Integration</div>
+          <div class="card-desc">Integrate HealthKit wearable data (HRV, sleep, activity) into coach context. Differentiator for enterprise sales.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Primary</div>
+                <div class="metric-value">0% to 20% wearable connection rate</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase B -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-low">L</span>
+          <div class="card-title">Cookie Consent / Updated TOS</div>
+          <div class="card-desc">Ensure TOS updated to comply with legal tracking requirements.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">100% compliance</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase C -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-high">H</span>
+          <div class="card-title">AI Connect</div>
+          <div class="card-desc">Route therapy-seeking app users to AI Connect matching instead of deflection. Bridge from AI Coach to 16K providers.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">~195 session requests/mo from app, AI Connect not live in app (0 events)</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">500+/mo first sessions from app</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase D -->
+      <div class="timeline-column"></div>
+      <!-- Phase E -->
+      <div class="timeline-column"></div>
+      <!-- Phase F -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Intelligent Triage</div>
+          <div class="card-desc">Route users by intent instead of one-size-fits-all. Needs scoping: intent-based landing UX, orchestration agent, or dedicated CS agent for billing. Phase 1 is discovery.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">~43% of AI Coach users are service seekers. Therapy deflection 65-72%, Billing deflection 65%</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">Therapy &lt;30%, Billing &lt;20%</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- TBD -->
+      <div class="timeline-column phase-tbd"></div>
+    </div>
+  </div>
+
+  <!-- TOTALBRAIN -->
+  <div class="swimlane area-tb">
+    <div class="swimlane-header">
+      <h2>TotalBrain</h2>
+      <span class="count">1 item</span>
+    </div>
+    <div class="timeline-grid">
+      <!-- Phase A -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-low">L</span>
+          <div class="card-title">Upgrade Android App</div>
+          <div class="card-desc">Upgrade Android app for continued presence in PlayStore.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">No Android Play Store downtime</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase B -->
+      <div class="timeline-column"></div>
+      <!-- Phase C -->
+      <div class="timeline-column"></div>
+      <!-- Phase D -->
+      <div class="timeline-column"></div>
+      <!-- Phase E -->
+      <div class="timeline-column"></div>
+      <!-- Phase F -->
+      <div class="timeline-column"></div>
+      <!-- TBD -->
+      <div class="timeline-column phase-tbd"></div>
+    </div>
+  </div>
+
+  <!-- COACH - SHARED -->
+  <div class="swimlane area-coach">
+    <div class="swimlane-header">
+      <h2>Coach -- Shared</h2>
+      <span class="count">6 items</span>
+    </div>
+    <div class="timeline-grid">
+      <!-- Phase A -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Prompt Experimentation</div>
+          <div class="card-desc">Rapid A/B testing on coach prompts: introductions, removing formulaic responses, adding clinical context. Leverage feature flagging + Amplitude variant tracking.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">25% return at 14d, 3.16 convos/user/mo, 24.5% feedback rate. Message count: TBD (needs LangSmith)</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase B -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Design and UX Experimentation</div>
+          <div class="card-desc">Test UX and design changes from Annika's research. Same A/B infra as prompt experimentation.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">25% return at 14d, 3.16 convos/user/mo, 24.5% feedback rate. Message count: TBD (needs LangSmith)</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase C -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Memory System Upgrade</div>
+          <div class="card-desc">Evaluate Hindsight vs Mem0 alternatives. Current memory is inconsistent. Becomes critical as experimentation improves retention.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">TBD (needs LangSmith)</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">40%+ power user 30-day retention, 5+ convos/mo for power users</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase D -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Resource Management System</div>
+          <div class="card-desc">System for dynamically injecting content (TTB tools, assessments, worksheets) into coach prompts. Coach-side retrieval and injection layer.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Current</div>
+                <div class="metric-value">0% of convos reference resources. Conversation depth: TBD</div>
+              </div>
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">30%+ include relevant resource, 20%+ increase in avg messages/session</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase E -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Agenda Agent Iteration</div>
+          <div class="card-desc">Iterate on Dave's v0 (BEAN-3000). Assessment scores as agenda seeds.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">60%+ agenda items addressed, 10%+ lift in returning rate vs unstructured</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- Phase F -->
+      <div class="timeline-column">
+        <div class="card" onclick="toggleCard(this)">
+          <span class="loe-badge loe-medium">M</span>
+          <div class="card-title">Fine-tuning Training (Q3 ship)</div>
+          <div class="card-desc">Prep work: training on session transcripts, evals. Productionization in Q3.</div>
+          <div class="card-expand-icon">&#9662;</div>
+          <div class="card-details"><div class="card-details-inner">
+            <div class="metric-row">
+              <div class="metric">
+                <div class="metric-label">Target</div>
+                <div class="metric-value">Outperform base model on 3+ quality metrics (Akele defining in Q2)</div>
+              </div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+      <!-- TBD -->
+      <div class="timeline-column phase-tbd"></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggleCard(card) {
+    card.classList.toggle('expanded');
+  }
+</script>
+
+</body>
+</html>
